@@ -4,11 +4,16 @@ export type View = "landing" | "dashboard" | "stats";
 
 export type Job = {
   id: string;
+  userId: string;
   company: string;
   role: string;
-  status: Status;
-  dateApplied: string;
-  deadline: string;
+  status: string;
+  appliedDate: Date;
+  deadline: Date | null;
+  url: string | null;
+  notes: string | null;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 type StatusConfig = {

@@ -1,4 +1,4 @@
-"use client";
+/* "use client";
 
 import { BarChart2, Briefcase, CheckCircle2, Search, TrendingUp } from "lucide-react";
 import { useMemo } from "react";
@@ -129,5 +129,19 @@ export default function DashboardPage() {
         ))}
       </section>
     </main>
+  );
+}
+ */
+
+import { getJobs } from "@/app/actions/jobs";
+import KanbanBoard from "@/components/KanbanBoard";
+
+export default async function DashboardPage() {
+  const jobs = await getJobs();
+
+  return (
+    <div className="min-h-screen bg-background p-6">
+      <KanbanBoard jobs={jobs} />
+    </div>
   );
 }
