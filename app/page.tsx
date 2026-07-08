@@ -1,6 +1,6 @@
 import { Briefcase, ArrowRight } from "lucide-react";
 import Image from "next/image";
-import {LoginCard} from "@/components/LoginCard";
+import { ClerkProvider, Show, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs';
 
 export default function Home() {
   return (
@@ -69,7 +69,7 @@ export default function Home() {
           deadline alerts, and interview notes — all in one place.
         </p>
 
-        {/* Auth card */}
+        {/* Auth card 
         <div
           className="w-full max-w-sm rounded-2xl p-6"
           style={{
@@ -126,7 +126,24 @@ export default function Home() {
           <p className="text-xs text-[#94A3B8]/50 text-center mt-4">
             By continuing, you agree to our Terms and Privacy Policy.
           </p>
-        </div>
+        </div>*/}
+      
+       <ClerkProvider>
+          <header className="flex justify-end items-center p-4 gap-4 h-16">
+            <Show when="signed-out">
+              <SignInButton />
+              <SignUpButton>
+                <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
+                  Sign Up
+                </button>
+              </SignUpButton>
+            </Show>
+            <Show when="signed-in">
+              <UserButton />
+            </Show>
+          </header>
+        </ClerkProvider>
+      
 
         <p className="mt-8 text-xs text-[#94A3B8]/40">
           Trusted by 12,000+ job seekers in active searches

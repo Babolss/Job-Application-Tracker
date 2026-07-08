@@ -2,6 +2,7 @@
 
 import { Bell, Briefcase, LayoutDashboard, LineChart } from "lucide-react";
 import type { View } from "../lib/types";
+import { UserButton } from "@clerk/nextjs";
 
 export function Navbar({
   view,
@@ -86,12 +87,7 @@ export function Navbar({
             />
           )}
         </button>
-        <button
-          className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold text-white shrink-0"
-          style={{ background: "linear-gradient(135deg, #6C63FF, #8B5CF6)" }}
-        >
-          JS
-        </button>
+        <UserButton />
       </div>
     </header>
   );

@@ -87,6 +87,28 @@
   --sidebar-accent-foreground: #F1F5F9;
   --sidebar-border: rgba(255, 255, 255, 0.06);
   --sidebar-ring: #6C63FF;
+
+  
+  --clerk-color-primary: light-dark(#2F3037, #F1F5F9);
+  --clerk-color-primary-foreground: light-dark(#FFFFFF, black);
+  --clerk-color-danger: #EF4444;
+  --clerk-color-success: #22C543;
+  --clerk-color-warning: #F36B16;
+  --clerk-color-neutral: light-dark(#000000, #F1F5F9);
+  --clerk-color-foreground: light-dark(#000000, #F1F5F9);
+  --clerk-color-background: light-dark(#FFFFFF, #0F1117);
+  --clerk-color-input: light-dark(#FFFFFF, #1E2233);
+  --clerk-color-input-foreground: light-dark(#000000, #FFFFFF);
+  --clerk-color-ring: light-dark(color-mix(in srgb, #000000 15.000000000000002%, transparent), #6C63FF);
+  --clerk-color-shimmer: #FFFFFF;
+  --clerk-color-modal-backdrop: #000000;
+  --clerk-border-radius: 0.5rem;
+  --clerk-spacing: 1rem;
+  --clerk-color-muted: #1E2233;
+  --clerk-color-muted-foreground: #94A3B8;
+  --clerk-color-border: #6C63FF;
+  --clerk-color-shadow: #1E2233;
+
 }
 
 .dark {
