@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import { Job } from "@/lib/types";
 import { updateJob, deleteJob } from "@/app/actions/jobs";
 
@@ -40,13 +41,18 @@ export default function JobDetailModal({
     onClose();
   }
 
-  return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+  const modal = (
+    <div
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+      onPointerDown={(e) => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
+    >
       <div
         className="bg-white border-4 border-black rounded-xl p-6 w-full max-w-md"
         style={{ boxShadow: "8px 8px 0px #000000" }}
+        onPointerDown={(e) => e.stopPropagation()}
       >
-        <h2 className="text-black text-xl font-bold uppercase mb-1">{job.company}</h2>
+        <h2 className="text-xl font-bold uppercase mb-1">{job.company}</h2>
         <p className="text-muted text-sm mb-4">{job.role}</p>
 
         <form onSubmit={handleUpdate} className="flex flex-col gap-3">
@@ -54,18 +60,18 @@ export default function JobDetailModal({
             name="company"
             defaultValue={job.company}
             required
-            className="text-black border-2 border-black rounded px-3 py-2 text-sm font-medium w-full"
+            className="border-2 border-black rounded px-3 py-2 text-sm font-medium w-full"
           />
           <input
             name="role"
             defaultValue={job.role}
             required
-            className="text-black border-2 border-black rounded px-3 py-2 text-sm font-medium w-full"
+            className="border-2 border-black rounded px-3 py-2 text-sm font-medium w-full"
           />
           <select
             name="status"
             defaultValue={job.status}
-            className="text-black border-2 border-black rounded px-3 py-2 text-sm font-medium w-full"
+            className="border-2 border-black rounded px-3 py-2 text-sm font-medium w-full"
           >
             <option value="Applied">Applied</option>
             <option value="Interview">Interview</option>
@@ -80,20 +86,20 @@ export default function JobDetailModal({
                 ? new Date(job.deadline).toISOString().split("T")[0]
                 : ""
             }
-            className="text-black border-2 border-black rounded px-3 py-2 text-sm font-medium w-full"
+            className="border-2 border-black rounded px-3 py-2 text-sm font-medium w-full"
           />
           <input
             name="url"
             defaultValue={job.url || ""}
             placeholder="Job Posting URL (optional)"
-            className="text-black border-2 border-black rounded px-3 py-2 text-sm font-medium w-full"
+            className="border-2 border-black rounded px-3 py-2 text-sm font-medium w-full"
           />
           <textarea
             name="notes"
             defaultValue={job.notes || ""}
             placeholder="Notes / Interview Prep"
             rows={3}
-            className="text-black border-2 border-black rounded px-3 py-2 text-sm font-medium w-full resize-none"
+            className="border-2 border-black rounded px-3 py-2 text-sm font-medium w-full resize-none"
           />
 
           <div className="flex gap-3 mt-2">
@@ -109,7 +115,7 @@ export default function JobDetailModal({
               type="button"
               onClick={handleDelete}
               disabled={deleting}
-              className="flex-1 bg-danger text-black font-bold uppercase py-2 border-2 border-black rounded"
+              className="flex-1 bg-danger text-white font-bold uppercase py-2 border-2 border-black rounded"
               style={{ boxShadow: "3px 3px 0px #000000" }}
             >
               {deleting ? "Deleting..." : "Delete"}
@@ -128,4 +134,6 @@ export default function JobDetailModal({
       </div>
     </div>
   );
+
+  return createPortal(modal, document.body);
 }

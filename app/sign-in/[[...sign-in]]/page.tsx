@@ -1,9 +1,18 @@
-import { SignIn } from '@clerk/nextjs';
+import { SignIn } from "@clerk/nextjs";
+ import { dark } from '@clerk/ui/themes'
 
-export default function SignInPage() {
+export default function Page() {
   return (
-    <div className='bg-muted flex w-full flex-1 items-center justify-center p-6 md:p-10'>
-      <SignIn />
+    <div className="flex h-screen items-center justify-center">
+      <SignIn
+        appearance={{
+          theme: dark,
+          
+          elements: {
+            formButtonPrimary: "bg-red text-white hover:bg-gray-800",
+          },
+        }}
+      />
     </div>
   );
 }

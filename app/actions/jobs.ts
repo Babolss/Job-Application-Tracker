@@ -103,3 +103,60 @@ export async function getJobs() {
 
     revalidatePath("/dashboard");
  }
+
+export async function getStats() {
+  const { userId } = await auth();
+  if (!userId) throw new Error("Not authenticated");
+
+  const jobs = await prisma.jobApplication.findMany({
+    where: { userId },
+    orderBy: { appliedDate: "asc" },
+  });
+
+  // Total applications
+  const total = jobs.length;
+
+  // Status counts
+  const statusCounts = {
+    Applied: jobs.filter((j) => j.status === "Applied").length,
+    Interview: jobs.filter((j) => j.status === "Interview").length,
+    Offer: jobs.filter((j) => j.status === "Offer").length,
+    Rejected: jobs.filter((j) => j.status === "Rejected").length,
+  };
+
+  // Response rate (Interview + Offer + Rejected = got a response)
+  const responses = statusCounts.Interview + statusCounts.Offer + statusCounts.Rejected;
+  const responseRate = total > 0 ? Math.round((responses / total) * 100) : 0;
+
+  // Applications per month (for bar chart)
+  const monthlyData: Record<string, number> = {};
+  jobs.forEach((job) => {
+    const month = new Date(job.appliedDate).toLocaleString("default", {
+      month: "short",
+      year: "numeric",
+    });
+    monthlyData[month] = (monthlyData[month] || 0) + 1;
+  });
+
+  const barChartData = Object.entries(monthlyData).map(([month, count]) => ({
+    month,
+    count,
+  }));
+
+  // Donut chart data
+  const donutData = [
+    { name: "Applied", value: statusCounts.Applied, color: "#6C63FF" },
+    { name: "Interview", value: statusCounts.Interview, color: "#FFD600" },
+    { name: "Offer", value: statusCounts.Offer, color: "#00C897" },
+    { name: "Rejected", value: statusCounts.Rejected, color: "#FF6B6B" },
+  ].filter((d) => d.value > 0);
+
+  return {
+    total,
+    statusCounts,
+    responseRate,
+    responses,
+    barChartData,
+    donutData,
+  };
+}

@@ -1,4 +1,4 @@
-import {
+/* import {
   BarChart3,
   Briefcase,
   Clock,
@@ -400,5 +400,31 @@ export default function StatsPage() {
         </div>
       </div>
     </main>
+  );
+}
+ */
+
+import { getStats } from "@/app/actions/jobs";
+import StatsClient from "@/components/StatsClient";
+
+export default async function StatsPage() {
+  const stats = await getStats();
+
+  return (
+    <div className="min-h-screen bg-background p-6">
+      <div className="max-w-5xl mx-auto">
+        {/* Page Header */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-black uppercase text-text">
+            Your Stats
+          </h1>
+          <p className="text-muted mt-1">
+            Track your progress and stay motivated
+          </p>
+        </div>
+
+        <StatsClient stats={stats} />
+      </div>
+    </div>
   );
 }
