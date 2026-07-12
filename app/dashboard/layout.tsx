@@ -15,7 +15,6 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 		<div className="min-h-screen flex flex-col bg-[#0F1117]">
 			<Navbar
 				view={view}
-				notifCount={2}
 				onNavigate={(nextView) => {
 					router.push(nextView === "dashboard" ? "/dashboard" : "/dashboard/stats");
 				}}

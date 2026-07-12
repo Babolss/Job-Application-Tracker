@@ -1,94 +1,169 @@
-"use client";
-
-import { Bell, Briefcase, LayoutDashboard, LineChart } from "lucide-react";
-import type { View } from "../lib/types";
+import { useState } from "react";
+import { BarChart2, Briefcase } from "lucide-react";
 import { UserButton } from "@clerk/nextjs";
+import type { View } from "../lib/types";
 
 export function Navbar({
   view,
   onNavigate,
-  notifCount,
 }: {
   view: View;
   onNavigate: (v: View) => void;
-  notifCount: number;
 }) {
+  const C = {
+    bg: "#FFFBE6",
+    surface: "#FFFFFF",
+    input: "#FFFBE6",
+    text: "#0A0A0A",
+    gray: "#666666",
+    purple: "#6C63FF",
+    yellow: "#FFD600",
+    mint: "#00C897",
+    coral: "#FF6B6B",
+    black: "#000000",
+    ink: "#000000",
+    bd: "3px solid #000",
+    bd2: "2px solid #000",
+    sh: "4px 4px 0px #000",
+    shSm: "2px 2px 0px #000",
+    shLg: "6px 6px 0px #000",
+    cream: "#FFFBE6",
+    white: "#FFFFFF",
+  };
+
   const navItems = [
-    { id: "dashboard" as View, label: "Dashboard", icon: <LayoutDashboard size={14} /> },
-    { id: "stats" as View, label: "Analytics", icon: <LineChart size={14} /> },
+    {
+      id: "dashboard" as View,
+      label: "Dashboard",
+      icon: <Briefcase size={15} />,
+    },
+    { id: "stats" as View, label: "Stats", icon: <BarChart2 size={15} />},
   ];
 
+  const [hov, setHov] = useState<View | null>(null);
+
   return (
-    <header
-      className="h-14 flex items-center px-6 sticky top-0 z-30 gap-6"
+    <nav
       style={{
-        backgroundColor: "rgba(15,17,23,0.9)",
-        backdropFilter: "blur(12px)",
-        borderBottom: "1px solid rgba(255,255,255,0.06)",
+        background: C.surface,
+        borderBottom: `4px solid ${C.ink}`,
+        padding: "0 24px",
+        height: "64px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        position: "sticky" as const,
+        top: 0,
+        zIndex: 100,
       }}
     >
       <button
-        onClick={() => onNavigate("dashboard")}
-        className="flex items-center gap-2 shrink-0"
+        style={{
+          background: "none",
+          border: "none",
+          cursor: "pointer",
+          padding: 0,
+        }}
       >
-        <div
-          className="w-7 h-7 rounded-lg flex items-center justify-center"
-          style={{ background: "linear-gradient(135deg, #6C63FF, #4F46E5)" }}
+        <span
+          style={{
+            fontWeight: 900,
+            fontSize: "1.45rem",
+            letterSpacing: "-1px",
+            color: C.text,
+          }}
         >
-          <Briefcase size={14} className="text-white" />
-        </div>
-        <span className="text-base font-bold text-[#F1F5F9] tracking-tight">
-          Trackify
+          TRACK<span style={{ color: C.purple }}>IFY</span>
         </span>
       </button>
 
-      <nav className="flex items-center gap-1">
+      
+
+      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        
+        <div className="flex items-center gap-3">
         {navItems.map((item) => {
           const active = view === item.id;
+
           return (
             <button
               key={item.id}
               onClick={() => onNavigate(item.id)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+              className=""
+              onMouseEnter={() => setHov(item.id)}
+              onMouseLeave={() => setHov(null)}
               style={{
-                color: active ? "#F1F5F9" : "#94A3B8",
-                backgroundColor: active ? "rgba(108,99,255,0.15)" : "transparent",
-              }}
-              onMouseEnter={(e) => {
-                if (!active)
-                  (e.currentTarget as HTMLElement).style.backgroundColor =
-                    "rgba(255,255,255,0.05)";
-              }}
-              onMouseLeave={(e) => {
-                if (!active)
-                  (e.currentTarget as HTMLElement).style.backgroundColor =
-                    "transparent";
+                background: active ? C.purple : hov === item.id ? C.bg : "transparent",
+                color: active ? "#fff" : C.text,
+                border: active ? C.bd : `2px solid transparent`,
+                padding: "6px 12px",
+                fontWeight: 700,
+                fontSize: "0.8rem",
+                textTransform: "uppercase" as const,
+                letterSpacing: "0.05em",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "5px",
+                transition: "background 0.1s, color 0.1s",
               }}
             >
-              <span style={{ color: active ? "#6C63FF" : "#94A3B8" }}>
+              <span style={{ color: active ? "#FFFFFF" : "#94A3B8" }}>
                 {item.icon}
               </span>
               {item.label}
             </button>
           );
         })}
-      </nav>
-
-      <div className="flex items-center gap-3 ml-auto">
-        <button
-          className="relative w-9 h-9 rounded-lg flex items-center justify-center text-[#94A3B8] hover:text-[#F1F5F9] hover:bg-white/5 transition-colors"
-          title="Notifications"
-        >
-          <Bell size={16} />
-          {notifCount > 0 && (
-            <span
-              className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full"
-              style={{ backgroundColor: "#EF4444" }}
-            />
-          )}
-        </button>
-        <UserButton />
       </div>
-    </header>
+
+        <UserButton
+          appearance={{
+            elements: {
+              userButtonPopoverCard: {
+                backgroundColor: "#FFFBE6",
+                border: "3px solid #000000",
+                boxShadow: "4px 4px 0px #000000",
+                borderRadius: "4px",
+              },
+              userButtonPopoverActionButton: {
+                fontWeight: 700,
+                borderRadius: "2px",
+                color: "#0A0A0A",
+              },
+              userButtonPopoverActionButton__signOut: {
+                color: "#FF6B6B",
+              },
+              userButtonPopoverActionButtonText: {
+                fontWeight: 700,
+                textTransform: "uppercase",
+                fontSize: "0.8rem",
+                letterSpacing: "0.05em",
+                color: "#0A0A0A",
+              },
+              userButtonPopoverActionButtonText__signOut: {
+                color: "#FF6B6B",
+              },
+              userButtonPopoverActionButtonIcon: {
+                color: "#0A0A0A",
+              },
+              userButtonPopoverActionButtonIcon__signOut: {
+                color: "#FF6B6B",
+              },
+              userButtonPopoverFooter: {
+                borderTop: "2px solid #000000",
+              },
+              userPreviewMainIdentifier: {
+                fontWeight: 900,
+                color: "#0A0A0A",
+              },
+              userPreviewSecondaryIdentifier: {
+                color: "#666666",
+              },
+            },
+          }}
+        />
+      </div>
+    </nav>
   );
 }

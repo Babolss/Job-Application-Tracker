@@ -1,17 +1,19 @@
 import type { Metadata } from "next";
-import { Inter, Geist, Geist_Mono } from "next/font/google";
+import { Space_Grotesk, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+import { neobrutalism } from "@clerk/ui/themes";
+
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
+  subsets: ["latin"],
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -31,9 +33,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.className} ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${spaceGrotesk.className} ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <ClerkProvider>
+      <ClerkProvider appearance={{ theme: neobrutalism }}>
       <body className="min-h-full flex flex-col">
         {children}
       </body>

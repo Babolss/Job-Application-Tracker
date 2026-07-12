@@ -418,7 +418,7 @@ export default async function StatsPage() {
           <h1 className="text-4xl font-black uppercase text-text">
             Your Stats
           </h1>
-          <p className="text-muted mt-1">
+          <p className="text-gray-600 mt-1">
             Track your progress and stay motivated
           </p>
         </div>

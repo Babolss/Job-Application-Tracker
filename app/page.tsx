@@ -1,10 +1,17 @@
-import { Briefcase, ArrowRight } from "lucide-react";
-import Image from "next/image";
-import { ClerkProvider, Show, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs';
+import { Briefcase } from "lucide-react";
+import {
+  ClerkProvider,
+  Show,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+} from "@clerk/nextjs";
+import { BrutalBtn } from "@/components/ui/BrutalBtn";
+import { neobrutalism } from "@clerk/ui/themes";
 
 export default function Home() {
   return (
-    <div className="font-inter min-h-screen flex flex-col" style={{ backgroundColor: "#0F1117" }}>
+    <div className="bg-[#FFFBE6] overflow-hidden font-inter min-h-screen flex flex-col">
       {/* Background effects */}
       <div
         className="fixed inset-0 pointer-events-none"
@@ -23,7 +30,7 @@ export default function Home() {
       />
 
       {/* Nav */}
-      <nav className="relative z-10 flex items-center px-8 h-16">
+      <nav className="bg-white border-b-4 border-black px-8 h-16 flex items-center justify-between sticky top-0 z-100">
         <div className="flex items-center gap-2">
           <div
             className="w-7 h-7 rounded-lg flex items-center justify-center"
@@ -31,119 +38,382 @@ export default function Home() {
           >
             <Briefcase size={14} className="text-white" />
           </div>
-          <span className="text-base font-bold text-[#F1F5F9] tracking-tight">
-            Trackify
+          <span className="font-black text-2xl tracking-[-1px] text-[#0A0A0A]">
+            TRACK<span className="text-[#6C63FF">IFY</span>
           </span>
         </div>
-      </nav>
-
-      {/* Hero */}
-      <main className="relative z-10 flex flex-col items-center justify-center flex-1 px-4 text-center pb-24">
-        {/* Pill badge */}
-        <div
-          className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-8"
-          style={{
-            backgroundColor: "rgba(108,99,255,0.12)",
-            border: "1px solid rgba(108,99,255,0.3)",
-            color: "#A89CFF",
-          }}
-        >
-          <span
-            className="w-1.5 h-1.5 rounded-full animate-pulse"
-            style={{ backgroundColor: "#6C63FF" }}
-          />
-          Free for job seekers
-        </div>
-
-        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-[#F1F5F9] leading-none tracking-tight mb-5">
-          Trackify
-        </h1>
-        <p className="text-xl sm:text-2xl text-[#94A3B8] mb-4 font-normal">
-          Your job search,{" "}
-          <span className="font-semibold" style={{ color: "#A89CFF" }}>
-            organized.
-          </span>
-        </p>
-        <p className="text-sm text-[#94A3B8]/70 max-w-sm mb-10 leading-relaxed">
-          Stop losing track of where you applied. Kanban-style tracking,
-          deadline alerts, and interview notes — all in one place.
-        </p>
-
-        {/* Auth card 
-        <div
-          className="w-full max-w-sm rounded-2xl p-6"
-          style={{
-            backgroundColor: "#1A1D27",
-            border: "1px solid rgba(255,255,255,0.08)",
-            boxShadow: "0 24px 64px rgba(0,0,0,0.4)",
-          }}
-        >
-          <h2 className="text-base font-semibold text-[#F1F5F9] mb-5 text-left">
-            Sign in to continue
-          </h2>
-
-          <button
-            className="w-full flex items-center justify-center gap-3 rounded-lg py-2.5 px-4 text-sm font-medium text-[#F1F5F9] transition-all hover:opacity-90 active:scale-95 mb-3"
-            style={{
-              backgroundColor: "#242838",
-              border: "1px solid rgba(255,255,255,0.1)",
-            }}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24">
-              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-            </svg>
-            Continue with Google
-          </button>
-
-          <div className="flex items-center gap-3 mb-3">
-            <div className="flex-1 h-px" style={{ backgroundColor: "rgba(255,255,255,0.08)" }} />
-            <span className="text-xs text-[#94A3B8]">or</span>
-            <div className="flex-1 h-px" style={{ backgroundColor: "rgba(255,255,255,0.08)" }} />
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <input
-              type="email"
-              placeholder="Email address"
-              className="w-full rounded-lg px-3 py-2.5 text-sm text-[#F1F5F9] placeholder-[#94A3B8]/50 focus:outline-none focus:ring-2 focus:ring-[#6C63FF]/50"
-              style={{
-                backgroundColor: "#242838",
-                border: "1px solid rgba(255,255,255,0.1)",
-              }}
-            />
-            <button
-              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-semibold text-white transition-all hover:opacity-90 active:scale-95"
-              style={{ background: "linear-gradient(135deg, #6C63FF, #4F46E5)" }}
-            >
-              Continue with Email
-              <ArrowRight size={14} />
-            </button>
-          </div>
-
-          <p className="text-xs text-[#94A3B8]/50 text-center mt-4">
-            By continuing, you agree to our Terms and Privacy Policy.
-          </p>
-        </div>*/}
-      
-       <ClerkProvider>
-          <header className="flex justify-end items-center p-4 gap-4 h-16">
+        <ClerkProvider>
+          <div className="flex items-center gap-3">
             <Show when="signed-out">
-              <SignInButton />
+              <SignInButton>
+                <BrutalBtn color={"bg-white"}>Sign In</BrutalBtn>
+              </SignInButton>
               <SignUpButton>
-                <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
-                  Sign Up
-                </button>
+                <BrutalBtn>Sign Up</BrutalBtn>
               </SignUpButton>
             </Show>
             <Show when="signed-in">
-              <UserButton />
+              <UserButton 
+              appearance={{
+          theme: neobrutalism,
+          
+        }}/>
             </Show>
-          </header>
+          </div>
         </ClerkProvider>
-      
+      </nav>
+
+      {/* Hero */}
+      <main className="">
+        {/* Pill badge */}
+
+        {/* Hero */}
+        <section
+          className="hero-section"
+          style={{
+            padding: "72px 32px 64px",
+            maxWidth: "1100px",
+            margin: "0 auto",
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "48px",
+            alignItems: "center",
+          }}
+        >
+          {/* Left */}
+          <div>
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                background: "#6C63FF",
+                border: "3px solid #000",
+                boxShadow: "4px 4px 0px #000",
+                padding: "6px 14px",
+                marginBottom: "28px",
+              }}
+            >
+              <span
+                style={{
+                  width: "8px",
+                  height: "8px",
+                  background: "#FFD600",
+                  border: `2px solid #000000`,
+                  borderRadius: "50%",
+                }}
+              />
+              <span
+                style={{
+                  fontWeight: 800,
+                  fontSize: "0.75rem",
+                  textTransform: "uppercase" as const,
+                  letterSpacing: "0.09em",
+                  color: "#fff",
+                }}
+              >
+                Free Job Tracker
+              </span>
+            </div>
+            <h1
+              style={{
+                fontWeight: 900,
+                fontSize: "clamp(2.8rem, 5.5vw, 4.2rem)",
+                lineHeight: 1.0,
+                letterSpacing: "-3px",
+                margin: "0 0 24px",
+                color: "#0A0A0A",
+              }}
+            >
+              YOUR JOB
+              <br />
+              SEARCH,{" "}
+              <span
+                style={{
+                  background: "#FFD600",
+                  border: "3px solid #000",
+                  padding: "0 8px",
+                  display: "inline-block",
+                  transform: "rotate(-1.5deg)",
+                  boxShadow: "4px 4px 0px #000",
+                  color: "#000",
+                }}
+              >
+                BRUTALLY
+              </span>
+              <br />
+              ORGANIZED.
+            </h1>
+
+            <p
+              style={{
+                fontWeight: 500,
+                fontSize: "1.05rem",
+                color: "#666666",
+                lineHeight: 1.7,
+                margin: "0 0 36px",
+                maxWidth: "400px",
+              }}
+            >
+              Stop losing track of applications in spreadsheets. Trackify gives
+              you a kanban board, real-time stats, and zero fluff — just
+              results.
+            </p>
+
+            <div
+              style={{
+                display: "flex",
+                gap: "14px",
+                flexWrap: "wrap" as const,
+              }}
+            >
+              <ClerkProvider>
+                <SignUpButton>
+                  <BrutalBtn color="bg-white p-[15px 32px] text-[1rem]">
+                    Get Started Free
+                  </BrutalBtn>
+                </SignUpButton>
+                <SignInButton>
+                  <BrutalBtn s="p-[15px 32px] text-[1rem]">
+                    Sign In →
+                  </BrutalBtn>
+                </SignInButton>
+              </ClerkProvider>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                gap: "24px",
+                marginTop: "36px",
+                flexWrap: "wrap" as const,
+              }}
+            >
+              {[
+                ["2,400+", "Jobs tracked"],
+                ["84%", "Avg response rate clarity"],
+                ["Free", "Always"],
+              ].map(([v, l]) => (
+                <div key={l}>
+                  <p
+                    style={{
+                      fontWeight: 900,
+                      fontSize: "1.4rem",
+                      margin: 0,
+                      color: "#000",
+                    }}
+                  >
+                    {v}
+                  </p>
+                  <p
+                    style={{
+                      fontWeight: 600,
+                      fontSize: "0.72rem",
+                      textTransform: "uppercase" as const,
+                      letterSpacing: "0.07em",
+                      margin: "2px 0 0",
+                      color: "#666666",
+                    }}
+                  >
+                    {l}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Right: mock dashboard */}
+          <div style={{ position: "relative" as const }}>
+            <div
+              style={{
+                position: "absolute" as const,
+                inset: 0,
+                background: "#000000",
+                transform: "translate(10px, 10px)",
+              }}
+            />
+            <div
+              style={{
+                background: "#FFFFFF",
+                border: "3px solid #000000",
+                padding: "24px",
+                position: "relative" as const,
+              }}
+            >
+              <div
+                style={{
+                  borderBottom: `3px solid ${"#000000"}`,
+                  marginBottom: "18px",
+                  paddingBottom: "12px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <span
+                  style={{
+                    fontWeight: 900,
+                    fontSize: "1rem",
+                    letterSpacing: "-0.5px",
+                    color: "#000",
+                  }}
+                >
+                  TRACK<span style={{ color: "#6C63FF" }}>IFY</span>
+                </span>
+                <div
+                  style={{
+                    width: "28px",
+                    height: "28px",
+                    background: "#6C63FF",
+                    border: "3px solid #000000",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontWeight: 800,
+                    fontSize: "0.75rem",
+                    color: "#fff",
+                  }}
+                >
+                  A
+                </div>
+              </div>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                  gap: "8px",
+                  marginBottom: "18px",
+                }}
+              >
+                {(
+                  [
+                    ["8", "#6C63FF", "#fff", "Total"],
+                    ["2", "#FFD600", "#000", "Interviews"],
+                    ["1", "#00C897", "#000", "Offers"],
+                    ["63%", "#ffffff", "#000000", "Rate"],
+                  ] as const
+                ).map(([v, bg, fg, l]) => (
+                  <div
+                    key={l}
+                    style={{
+                      background: bg,
+                      border: "3px solid #000000",
+                      padding: "10px 8px",
+                    }}
+                  >
+                    <p
+                      style={{
+                        fontWeight: 900,
+                        fontSize: "1.1rem",
+                        margin: 0,
+                        color: fg,
+                      }}
+                    >
+                      {v}
+                    </p>
+                    <p
+                      style={{
+                        fontWeight: 700,
+                        fontSize: "0.6rem",
+                        textTransform: "uppercase" as const,
+                        margin: "2px 0 0",
+                        color: fg,
+                        opacity: 0.75,
+                      }}
+                    >
+                      {l}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "8px",
+                }}
+              >
+                {(
+                  [
+                    [
+                      "Applied",
+                      "#6C63FF",
+                      "#fff",
+                      ["Stripe", "Notion", "Framer"],
+                    ],
+                    ["Interview", "#FFD600", "#000", ["Vercel", "Loom"]],
+                  ] as const
+                ).map(([col, bg, fg, items]) => (
+                  <div key={col}>
+                    <div
+                      style={{
+                        background: bg,
+                        border: "3px solid #000000",
+                        padding: "5px 8px",
+                        marginBottom: "6px",
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontWeight: 800,
+                          fontSize: "0.62rem",
+                          textTransform: "uppercase" as const,
+                          color: fg,
+                          letterSpacing: "0.05em",
+                        }}
+                      >
+                        {col}
+                      </span>
+                      <span
+                        style={{
+                          fontWeight: 800,
+                          fontSize: "0.62rem",
+                          color: fg,
+                        }}
+                      >
+                        {(items as readonly string[]).length}
+                      </span>
+                    </div>
+                    {(items as readonly string[]).map((company) => (
+                      <div
+                        key={company}
+                        style={{
+                          background: "#FFFFFF",
+                          border: "3px solid #000000",
+                          borderLeft: `4px solid ${bg}`,
+                          padding: "7px 8px",
+                          marginBottom: "5px",
+                        }}
+                      >
+                        <p
+                          style={{
+                            fontWeight: 800,
+                            fontSize: "0.72rem",
+                            margin: 0,
+                            color: "#0A0A0A",
+                          }}
+                        >
+                          {company}
+                        </p>
+                        <p
+                          style={{
+                            fontWeight: 500,
+                            fontSize: "0.62rem",
+                            color: "#6B7280",
+                            margin: "2px 0 0",
+                          }}
+                        >
+                          Software Engineer
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
 
         <p className="mt-8 text-xs text-[#94A3B8]/40">
           Trusted by 12,000+ job seekers in active searches

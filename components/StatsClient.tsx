@@ -12,6 +12,28 @@ import {
   Cell,
   Legend,
 } from "recharts";
+import { useState } from "react";
+
+const C = {
+  bg: "#FFFBE6",
+  surface: "#FFFFFF",
+  input: "#FFFBE6",
+  text: "#0A0A0A",
+  gray: "#666666",
+  purple: "#6C63FF",
+  yellow: "#FFD600",
+  mint: "#00C897",
+  coral: "#FF6B6B",
+  black: "#000000",
+  ink: "#000000",
+  bd: "3px solid #000",
+  bd2: "2px solid #000",
+  sh: "4px 4px 0px #000",
+  shSm: "2px 2px 0px #000",
+  shLg: "6px 6px 0px #000",
+  cream: "#FFFBE6",
+  white: "#FFFFFF",
+};
 
 type Stats = {
   total: number;
@@ -36,7 +58,7 @@ export default function StatsClient({ stats }: { stats: Stats }) {
       >
         <p className="text-4xl mb-4">📋</p>
         <h2 className="text-2xl font-black uppercase mb-2">No data yet</h2>
-        <p className="text-muted">
+        <p className="text-gray-600">
           Add more applications to start seeing your stats
         </p>
       </div>
@@ -228,7 +250,7 @@ export default function StatsClient({ stats }: { stats: Stats }) {
             </div>
           </div>
 
-          <p className="text-muted text-sm font-bold mt-4 text-center">
+          <p className="text-gray-600 text-sm font-bold mt-4 text-center">
             of applications got a response
           </p>
         </div>
@@ -249,14 +271,19 @@ function StatCard({
   color: string;
   darkText?: boolean;
 }) {
+  const [hov, setHov] = useState(false);
   return (
     <div
-      className="rounded-xl p-6 border-3 border-black"
+    onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
       style={{
-        backgroundColor: color,
-        border: "3px solid black",
-        boxShadow: "6px 6px 0px #000000",
+        background: color, border: C.bd,
+        boxShadow: hov ? C.shSm : C.sh,
+        transform: hov ? "translate(2px,2px)" : "none",
+        transition: "transform 0.1s, box-shadow 0.1s",
+        padding: "20px 22px",
       }}
+      className="rounded-xl p-6 border-3 border-black"
     >
       <p className={`text-4xl font-black ${darkText ? "text-black" : "text-white"}`}>
         {value}
@@ -273,24 +300,33 @@ function MiniStatCard({
   label,
   value,
   color,
-  light,
 }: {
   label: string;
   value: number;
   color: string;
   light?: boolean;
 }) {
+  const [hov, setHov] = useState(false);
   return (
+    
     <div
+    onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
       className="bg-white rounded-xl p-4 border-2 border-black"
-      style={{ boxShadow: "4px 4px 0px #000000" }}
+      style={{
+        border: C.bd,
+        boxShadow: hov ? C.shSm : C.sh,
+        transform: hov ? "translate(2px,2px)" : "none",
+        transition: "transform 0.1s, box-shadow 0.1s",
+        padding: "20px 22px",
+      }}
     >
       <div
         className="w-3 h-3 rounded-full border border-black mb-2"
         style={{ backgroundColor: color }}
       />
-      <p className={`text-2xl font-black ${light ? "text-white" : "text-black"}`}>{value}</p>
-      <p className={`text-xs font-bold uppercase ${light ? "text-white/80" : "text-muted"}`}>{label}</p>
+      <p className={`text-2xl font-black ${"text-black"}`}>{value}</p>
+      <p className={`text-xs font-bold uppercase ${"text-gray-600"}`}>{label}</p>
     </div>
   );
 }

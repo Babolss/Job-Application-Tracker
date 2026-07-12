@@ -4,6 +4,9 @@ import { useState } from "react";
 import { createPortal } from "react-dom";
 import { Job } from "@/lib/types";
 import { updateJob, deleteJob } from "@/app/actions/jobs";
+import { useRouter } from "next/navigation";
+import { BrutalInput, BrutalTextarea, BrutalSelect } from "./FormFields";
+import { BrutalBtn } from "./ui/BrutalBtn";
 
 export default function JobDetailModal({
   job,
@@ -14,6 +17,28 @@ export default function JobDetailModal({
 }) {
   const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const router = useRouter();
+
+  const C = {
+    bg: "#FFFBE6",
+    surface: "#FFFFFF",
+    input: "#FFFBE6",
+    text: "#0A0A0A",
+    gray: "#666666",
+    purple: "#6C63FF",
+    yellow: "#FFD600",
+    mint: "#00C897",
+    coral: "#FF6B6B",
+    black: "#000000",
+    ink: "#000000",
+    bd: "3px solid #000",
+    bd2: "2px solid #000",
+    sh: "4px 4px 0px #000",
+    shSm: "2px 2px 0px #000",
+    shLg: "6px 6px 0px #000",
+    cream: "#FFFBE6",
+    white: "#FFFFFF",
+  };
 
   async function handleUpdate(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -31,6 +56,7 @@ export default function JobDetailModal({
 
     setLoading(false);
     onClose();
+    router.refresh();
   }
 
   async function handleDelete() {
@@ -43,93 +69,144 @@ export default function JobDetailModal({
 
   const modal = (
     <div
-      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+      className=""
+      style={{
+        position: "fixed" as const,
+        inset: 0,
+        background: "rgba(0,0,0,0.7)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: 1000,
+        padding: "20px",
+      }}
       onPointerDown={(e) => e.stopPropagation()}
       onClick={(e) => e.stopPropagation()}
     >
       <div
-        className="bg-white border-4 border-black rounded-xl p-6 w-full max-w-md"
-        style={{ boxShadow: "8px 8px 0px #000000" }}
+        className=""
+        style={{
+          background: C.surface,
+          border: C.bd,
+          boxShadow: C.shLg,
+          width: "100%",
+          maxWidth: "540px",
+          maxHeight: "90vh",
+          overflowY: "auto" as const,
+        }}
         onPointerDown={(e) => e.stopPropagation()}
       >
-        <h2 className="text-xl font-bold uppercase mb-1">{job.company}</h2>
-        <p className="text-muted text-sm mb-4">{job.role}</p>
+        <div
+          style={{
+            fontWeight: 900,
+            fontSize: "1.3rem",
+            textTransform: "uppercase" as const,
+            letterSpacing: "-0.3px",
+            margin: 0,
+            color: C.text,
+            padding: "22px 24px 0",
+            marginBottom: "20px",
+          }}
+        >
+          <h2 className="text-xl font-bold uppercase mb-1">{job.company}</h2>
+          <p className="text-black text-sm mb-4">{job.role}</p>
+        </div>
 
-        <form onSubmit={handleUpdate} className="flex flex-col gap-3">
-          <input
-            name="company"
-            defaultValue={job.company}
-            required
-            className="border-2 border-black rounded px-3 py-2 text-sm font-medium w-full"
-          />
-          <input
-            name="role"
-            defaultValue={job.role}
-            required
-            className="border-2 border-black rounded px-3 py-2 text-sm font-medium w-full"
-          />
-          <select
-            name="status"
-            defaultValue={job.status}
-            className="border-2 border-black rounded px-3 py-2 text-sm font-medium w-full"
-          >
-            <option value="Applied">Applied</option>
-            <option value="Interview">Interview</option>
-            <option value="Offer">Offer</option>
-            <option value="Rejected">Rejected</option>
-          </select>
-          <input
-            name="deadline"
-            type="date"
-            defaultValue={
-              job.deadline
-                ? new Date(job.deadline).toISOString().split("T")[0]
-                : ""
-            }
-            className="border-2 border-black rounded px-3 py-2 text-sm font-medium w-full"
-          />
-          <input
-            name="url"
-            defaultValue={job.url || ""}
-            placeholder="Job Posting URL (optional)"
-            className="border-2 border-black rounded px-3 py-2 text-sm font-medium w-full"
-          />
-          <textarea
-            name="notes"
-            defaultValue={job.notes || ""}
-            placeholder="Notes / Interview Prep"
-            rows={3}
-            className="border-2 border-black rounded px-3 py-2 text-sm font-medium w-full resize-none"
-          />
-
-          <div className="flex gap-3 mt-2">
-            <button
-              type="submit"
-              disabled={loading}
-              className="flex-1 bg-primary text-white font-bold uppercase py-2 border-2 border-black rounded"
-              style={{ boxShadow: "3px 3px 0px #000000" }}
-            >
-              {loading ? "Saving..." : "Save Changes"}
-            </button>
-            <button
-              type="button"
-              onClick={handleDelete}
-              disabled={deleting}
-              className="flex-1 bg-danger text-white font-bold uppercase py-2 border-2 border-black rounded"
-              style={{ boxShadow: "3px 3px 0px #000000" }}
-            >
-              {deleting ? "Deleting..." : "Delete"}
-            </button>
+        <form
+          onSubmit={handleUpdate}
+          className="grid grid-cols-2 gap-2"
+          style={{ padding: "0 24px 24px" }}
+        >
+          <div className="col-span-2">
+            <BrutalInput
+              label="Company"
+              name="company"
+              defaultValue={job.company}
+              required
+            />
           </div>
 
-          <button
-            type="button"
-            onClick={onClose}
-            className="w-full bg-white text-black font-bold uppercase py-2 border-2 border-black rounded mt-1"
-            style={{ boxShadow: "3px 3px 0px #000000" }}
-          >
-            Cancel
-          </button>
+          <div className="col-span-2">
+            <BrutalInput
+              label="Role"
+              name="role"
+              defaultValue={job.role}
+              required
+            />
+          </div>
+
+          <div>
+            <BrutalSelect
+              label="Status"
+              name="status"
+              options={["Applied", "Interview", "Offer", "Rejected"]}
+              defaultValue={job.status}
+            />
+          </div>
+
+          <div>
+            <BrutalInput
+              label="Deadline"
+              name="deadline"
+              type="date"
+              defaultValue={
+                job.deadline
+                  ? new Date(job.deadline).toISOString().split("T")[0]
+                  : ""
+              }
+            />
+          </div>
+
+          <div className="col-span-2">
+            <BrutalInput
+              label="Job Posting URL (optional)"
+              name="url"
+              defaultValue={job.url || ""}
+              placeholder="Job Posting URL (optional)"
+            />
+          </div>
+
+          <div className="col-span-2">
+            <BrutalTextarea
+              label="Notes / Interview Prep"
+              name="notes"
+              defaultValue={job.notes || ""}
+              placeholder="Notes / Interview Prep"
+            />
+          </div>
+
+          <div className="col-span-full">
+            <div className="flex gap-3 mt-2">
+              <BrutalBtn
+                type="submit"
+                disabled={loading}
+                color="bg-[#6C63FF]"
+                full
+              >
+                {loading ? "Saving..." : "Save Changes"}
+              </BrutalBtn>
+              <BrutalBtn
+                full
+                type="button"
+                onClick={handleDelete}
+                disabled={deleting}
+                color="bg-[#FF6B6B]"
+              >
+                {deleting ? "Deleting..." : "Delete"}
+              </BrutalBtn>
+            </div>
+          </div>
+
+          <div className="col-span-full">
+            <BrutalBtn
+              type="button"
+              onClick={onClose}
+              color="bg-[#FFFFFF]"
+              full
+            >
+              Cancel
+            </BrutalBtn>
+          </div>
         </form>
       </div>
     </div>
