@@ -3,6 +3,7 @@
 import {prisma} from "@/lib/prisma";;
 import {auth} from "@clerk/nextjs/server";
 import {revalidatePath} from "next/cache";
+import type { JobApplication } from "@prisma/client";
 
 export async function getJobs() {
     const {userId} = await auth();
@@ -113,24 +114,21 @@ export async function getStats() {
     orderBy: { appliedDate: "asc" },
   });
 
-  // Total applications
   const total = jobs.length;
 
-  // Status counts
+  // ← add : JobApplication to each filter callback
   const statusCounts = {
-    Applied: jobs.filter((j) => j.status === "Applied").length,
-    Interview: jobs.filter((j) => j.status === "Interview").length,
-    Offer: jobs.filter((j) => j.status === "Offer").length,
-    Rejected: jobs.filter((j) => j.status === "Rejected").length,
+    Applied: jobs.filter((j: JobApplication) => j.status === "Applied").length,
+    Interview: jobs.filter((j: JobApplication) => j.status === "Interview").length,
+    Offer: jobs.filter((j: JobApplication) => j.status === "Offer").length,
+    Rejected: jobs.filter((j: JobApplication) => j.status === "Rejected").length,
   };
 
-  // Response rate (Interview + Offer + Rejected = got a response)
   const responses = statusCounts.Interview + statusCounts.Offer + statusCounts.Rejected;
   const responseRate = total > 0 ? Math.round((responses / total) * 100) : 0;
 
-  // Applications per month (for bar chart)
   const monthlyData: Record<string, number> = {};
-  jobs.forEach((job) => {
+  jobs.forEach((job: JobApplication) => {
     const month = new Date(job.appliedDate).toLocaleString("default", {
       month: "short",
       year: "numeric",
@@ -143,7 +141,6 @@ export async function getStats() {
     count,
   }));
 
-  // Donut chart data
   const donutData = [
     { name: "Applied", value: statusCounts.Applied, color: "#6C63FF" },
     { name: "Interview", value: statusCounts.Interview, color: "#FFD600" },
