@@ -52,8 +52,9 @@ export default function KandbanBoar({ jobs: initialJobs }: { jobs: Job[] }) {
 
         if (!job || job.status === newStatus) return;
 
-        setJobs((prev) => 
-            prev.map((j) => (j.id === jobId ? { ...j, status: newStatus } : j)));
+        setJobs((prev) =>
+        prev.map((j) => (j.id === jobId ? { ...j, status: newStatus } : j))
+        );
 
         await updateJobStatus(jobId, newStatus);
         router.refresh();
@@ -75,7 +76,7 @@ export default function KandbanBoar({ jobs: initialJobs }: { jobs: Job[] }) {
       </div>
 
       {/* Kanban Board */}
-      <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+      <DndContext id="kanban-board" collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <div className="grid grid-cols-4 gap-4">
           {COLUMNS.map((column) => {
             const columnJobs = jobs.filter((job) => job.status === column.id);

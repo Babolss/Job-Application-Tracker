@@ -118,13 +118,6 @@ export default function AddJobModal() {
             />
           </div>
 
-          {/* <input
-            name="company"
-            placeholder="Company"
-            required
-            className="text-black border-2 border-black rounded px-3 py-2 text-sm font-medium w-full"
-          /> */}
-
           <div className="col-span-2">
             <BrutalInput
               label="Role"
@@ -134,13 +127,6 @@ export default function AddJobModal() {
             />
           </div>
 
-          {/* <input
-            name="role"
-            placeholder="Role / Job Title"
-            required
-            className="text-black border-2 border-black rounded px-3 py-2 text-sm font-medium w-full"
-          /> */}
-
           <div className="col-span-1">
             <BrutalSelect
               label="Status"
@@ -149,24 +135,10 @@ export default function AddJobModal() {
             />
           </div>
 
-          {/* <select
-            name="status"
-            className="text-black border-2 border-black rounded px-3 py-2 text-sm font-medium w-full"
-          >
-            <option value="Applied">Applied</option>
-            <option value="Interview">Interview</option>
-            <option value="Offer">Offer</option>
-            <option value="Rejected">Rejected</option>
-          </select> */}
           <div className="col-span-1">
             <BrutalInput label="Deadline" name="deadline" type="date" />
           </div>
 
-          {/* <input
-            name="deadline"
-            type="date"
-            className="text-black border-2 border-black rounded px-3 py-2 text-sm font-medium w-full"
-          /> */}
           <div className="col-span-2">
             <BrutalInput
               label="Job Posting URL (optional)"
@@ -175,11 +147,6 @@ export default function AddJobModal() {
             />
           </div>
 
-          {/* <input
-            name="url"
-            placeholder="Job Posting URL (optional)"
-            className="text-black border-2 border-black rounded px-3 py-2 text-sm font-medium w-full"
-          /> */}
           <div className="col-span-2">
             <BrutalTextarea
               label="Notes / Interview Prep"
@@ -188,12 +155,6 @@ export default function AddJobModal() {
             />
           </div>
 
-          {/* <textarea
-            name="notes"
-            placeholder="Notes / Interview Prep (optional)"
-            rows={3}
-            className="text-black border-2 border-black rounded px-3 py-2 text-sm font-medium w-full resize-none"
-          /> */}
           <div className="col-span-2">
             <div className="flex gap-3 mt-2">
               <BrutalBtn disabled={loading} type="submit" full>

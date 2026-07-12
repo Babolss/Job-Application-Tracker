@@ -55,8 +55,9 @@ export default function JobDetailModal({
     });
 
     setLoading(false);
-    onClose();
     router.refresh();
+    onClose();
+    
   }
 
   async function handleDelete() {
@@ -64,6 +65,7 @@ export default function JobDetailModal({
     setDeleting(true);
     await deleteJob(job.id);
     setDeleting(false);
+    router.refresh();
     onClose();
   }
 
