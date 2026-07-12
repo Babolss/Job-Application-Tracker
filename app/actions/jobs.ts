@@ -3,9 +3,20 @@
 import {prisma} from "@/lib/prisma";;
 import {auth} from "@clerk/nextjs/server";
 import {revalidatePath} from "next/cache";
-import type { Prisma } from "@prisma/client";
 
-type JobApplicationType = Prisma.JobApplicationGetPayload<object>;
+type JobRow = {
+  id: string;
+  userId: string;
+  company: string;
+  role: string;
+  status: string;
+  appliedDate: Date;
+  deadline: Date | null;
+  url: string | null;
+  notes: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
 export async function getJobs() {
     const {userId} = await auth();
@@ -120,17 +131,17 @@ export async function getStats() {
 
   // ← add : JobApplication to each filter callback
   const statusCounts = {
-    Applied: jobs.filter((j: JobApplicationType) => j.status === "Applied").length,
-    Interview: jobs.filter((j: JobApplicationType) => j.status === "Interview").length,
-    Offer: jobs.filter((j: JobApplicationType) => j.status === "Offer").length,
-    Rejected: jobs.filter((j: JobApplicationType) => j.status === "Rejected").length,
+    Applied: jobs.filter((j: JobRow) => j.status === "Applied").length,
+    Interview: jobs.filter((j: JobRow) => j.status === "Interview").length,
+    Offer: jobs.filter((j: JobRow) => j.status === "Offer").length,
+    Rejected: jobs.filter((j: JobRow) => j.status === "Rejected").length,
   };
 
   const responses = statusCounts.Interview + statusCounts.Offer + statusCounts.Rejected;
   const responseRate = total > 0 ? Math.round((responses / total) * 100) : 0;
 
   const monthlyData: Record<string, number> = {};
-  jobs.forEach((job: JobApplicationType) => {
+  jobs.forEach((job: JobRow) => {
     const month = new Date(job.appliedDate).toLocaleString("default", {
       month: "short",
       year: "numeric",
