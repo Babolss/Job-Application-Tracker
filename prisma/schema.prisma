@@ -3,19 +3,20 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model JobApplication {
-  id          String   @id @default(cuid())
-  userId      String                        // comes from Clerk
+  id          String    @id @default(cuid())
+  userId      String
   company     String
   role        String
-  status      String   @default("Applied") // Applied | Interview | Offer | Rejected
-  appliedDate DateTime @default(now())
-  deadline    DateTime?                     // optional
-  url         String?                       // optional job posting link
-  notes       String?                       // optional notes
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  status      String    @default("Applied")
+  appliedDate DateTime  @default(now())
+  deadline    DateTime?
+  url         String?
+  notes       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
