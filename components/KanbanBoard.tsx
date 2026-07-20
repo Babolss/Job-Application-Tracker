@@ -61,7 +61,7 @@ export default function KandbanBoar({ jobs: initialJobs }: { jobs: Job[] }) {
     }
 
     return (
-    <div>
+    <div className="px-10 py-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>

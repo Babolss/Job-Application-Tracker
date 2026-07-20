@@ -1,5 +1,12 @@
 import { getJobs } from "@/app/actions/jobs";
 import KanbanBoard from "@/components/KanbanBoard";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard | Trackify",
+};
+
+
 
 export default async function DashboardPage() {
   const jobs = await getJobs();

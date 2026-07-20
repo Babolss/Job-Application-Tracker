@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { Navbar } from "@/components/NavBar";
 import type { View } from "@/lib/types";
 
+
 export default function DashboardLayout({ children }: { children: ReactNode }) {
 	const pathname = usePathname();
 	const router = useRouter();
